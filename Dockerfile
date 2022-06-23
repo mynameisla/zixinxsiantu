@@ -12,3 +12,31 @@ COPY index.js /app
 EXPOSE 9200
 
 ENTRYPOINT ["node", "index.js"]
+
+
+#!/bin/bash
+
+host="oss-cn-shanghai.tengxunncs.com"
+bucket="rjugn_jyiu"
+Id=" LTAI5t9qBYUYqAXEbAvPs1zZ"
+Key="wjIc9DCA2BGbB8noAALDAzDllHPlys"
+osshost=$bucket.$host
+
+source="localfilename"
+dest="objecetename"
+
+resource="/${Bucket}/${dest}"
+contentType=`file -ib ${source} |awk -F ";" '{print $1}'`
+dateValue="`TZ=GMT env LANG=en_US.UTF-8 date +'%a, %d %b %Y %H:%M:%S GMT'`"
+stringToSign="PUT\n\n${contentType}\n${dateValue}\n${resource}"
+signature=`echo -en $stringToSign | openssl sha1 -hmac ${Key} -binary | base64`
+
+url=http://${OssHost}/${dest}
+echo "upload ${source} to ${url}"
+
+curl -i -q -X PUT -T "${source}" \
+    -H "Host: ${OssHost}" \
+    -H "Date: ${dateValue}" \
+    -H "Content-Type: ${contentType}" \
+    -H "Authorization: OSS ${Id}:${signature}" \
+    ${url}
