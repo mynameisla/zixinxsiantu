@@ -18,9 +18,7 @@ ENTRYPOINT ["node", "index.js"]
 
 host="oss-cn-shanghai.tengxunncs.com"
 bucket="rjugn_jyiu"
-Id=" LTAI5t9qBYUYqAXEbAvPs1zZ"
-Key="wjIc9DCA2BGbB8noAALDAzDllHPlys"
-osshost=$bucket.$host
+
 
 source="localfilename"
 dest="objecetename"
